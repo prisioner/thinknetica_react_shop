@@ -3,11 +3,11 @@ import Image from "./Image"
 import Price from "./Price"
 import TextBox from "./TextBox"
 
-const ProductCard = (props) => (
+const ProductCard = ({title, imageUrl, price}) => (
   <div style={{ textAlign: "center", marginBottom: "20px" }}>
-    <TextBox text={props.text} /><br />
-    <Image src={props.src} width={120} height={120} alt={`[${props.text}]`} /><br />
-    <Price price={props.price} />
+    <TextBox>{title}</TextBox><br />
+    <Image src={imageUrl} width={120} height={120} alt={`[${title}]`} /><br />
+    <Price price={price} />
   </div>
 )
 

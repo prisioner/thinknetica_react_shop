@@ -1,5 +1,5 @@
 import React from "react"
 
-const Price = (props) => (<span>{`₽${props.price}`}</span>)
+const Price = ({price}) => (<span>₽{price}</span>)
 
 export default Price

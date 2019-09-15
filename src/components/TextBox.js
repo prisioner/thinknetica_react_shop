@@ -1,5 +1,5 @@
 import React from "react"
 
-const TextBox = (props) => (<span><strong>{props.text}</strong></span>)
+const TextBox = ({children}) => (<span><strong>{children}</strong></span>)
 
 export default TextBox
