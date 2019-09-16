@@ -9,12 +9,14 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
+  "dependencies": {
+    "react": "^16.9.0",
+    "react-dom": "^16.9.0"
+  },
   "devDependencies": {
     "@babel/core": "^7.4.3",
     "@babel/preset-env": "^7.4.3",
     "@babel/preset-react": "^7.0.0",
-    "@babel/register": "^7.4.0",
-    "react": "^16.9.0",
-    "react-dom": "^16.9.0"
+    "@babel/register": "^7.4.0"
   }
 }
