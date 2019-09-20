@@ -1,36 +1,30 @@
 import React from "react"
 import CartContext from "../contexts/CartContext"
 import { Container } from "react-bootstrap"
+import _ from "lodash"
 
 export default class CartContainer extends React.PureComponent {
-  constructor(props) {
-    super(props)
+  addProduct = (product, count) => {
+    const cartProducts = _.clone(this.state.cartProducts)
 
-    this.addProduct = (product, count) => {
-      const { cartProducts } = this.state
+    if (!cartProducts.hasOwnProperty(product)) cartProducts[product] = 0
 
-      if (!cartProducts.hasOwnProperty(product)) cartProducts[product] = 0
+    cartProducts[product] += parseInt(count)
 
-      cartProducts[product] += parseInt(count)
-
-      this.setState = {
-        cartProducts,
-      }
-    }
+    this.setState({ ...this.state, cartProducts })
   }
 
   state = {
     cartProducts: {},
+    addProduct: this.addProduct,
   }
 
   render () {
     const { children } = this.props
-    const context = this.state
-    context.addProduct = this.addProduct
 
     return (
       <Container>
-        <CartContext.Provider value={context}>
+        <CartContext.Provider value={this.state}>
           {children}
         </CartContext.Provider>
       </Container>
