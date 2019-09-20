@@ -6,7 +6,12 @@ import BuyButton from "./BuyButton"
 import { Card } from "react-bootstrap"
 
 const ProductCard = ({ id, title, imageUrl, price }) => (
-  <Card className="text-center">
+  <Card
+    className="text-center"
+    draggable
+    data-product-id={id}
+    onDragStart={(e) => (e.dataTransfer.setData("text/plain", id), e)}
+  >
     <Card.Header><TextBox>{title}</TextBox></Card.Header>
     <Card.Body>
       <p><Image src={imageUrl} width={120} height={120} alt={`[${title}]`} /></p>

@@ -10,11 +10,20 @@ export default class Catalog extends React.PureComponent {
   render () {
     return (
       <CartContainer>
-        <Row className="mt-5">
+        <Row className="mt-5" style={{ minHeight: "100px" }}>
           <CartContext.Consumer>
             {
-              ({ cartProducts }) => (
-                <Cart productList={PRODUCTS} cartProducts={cartProducts} />
+              ({ cartProducts, addProduct }) => (
+                <Cart
+                  productList={PRODUCTS}
+                  cartProducts={cartProducts}
+                  onDragOver={(e) => e.preventDefault()}
+                  onDrop={(e) => {
+                    e.preventDefault()
+                    const productId = e.dataTransfer.getData("text/plain")
+                    addProduct(productId)
+                  }}
+                />
               )
             }
           </CartContext.Consumer>

@@ -7,6 +7,8 @@ export default class Cart extends React.PureComponent {
   static propTypes = {
     cartProducts: PropTypes.object.isRequired,
     productList: PropTypes.array.isRequired,
+    onDragOver: PropTypes.func,
+    onDrop: PropTypes.func,
   }
 
   disabled = () => _.isEmpty(this.props.cartProducts)
@@ -20,6 +22,7 @@ export default class Cart extends React.PureComponent {
   }
 
   render () {
+    const { onDragOver, onDrop } = this.props
     const items = _.map(this.props.cartProducts, (count, id) => {
       const { title } = this.props.productList.find(item => item.id === parseInt(id))
 
@@ -27,7 +30,12 @@ export default class Cart extends React.PureComponent {
     })
 
     return (
-      <Col md={{ span: 2, offset: 10 }} className="text-right">
+      <Col
+        md={12}
+        className="text-right border mh-100"
+        onDragOver={onDragOver}
+        onDrop={onDrop}
+      >
         <DropdownButton
           alignRight
           title={this.title()}

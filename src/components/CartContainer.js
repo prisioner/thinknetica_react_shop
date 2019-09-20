@@ -4,7 +4,7 @@ import { Container } from "react-bootstrap"
 import _ from "lodash"
 
 export default class CartContainer extends React.PureComponent {
-  addProduct = (product, count) => {
+  addProduct = (product, count = 1) => {
     const cartProducts = _.clone(this.state.cartProducts)
 
     if (!cartProducts.hasOwnProperty(product)) cartProducts[product] = 0
