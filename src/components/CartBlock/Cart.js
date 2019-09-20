@@ -1,30 +1,26 @@
 import React from "react"
 import PropTypes from "prop-types"
 import { Col, Dropdown, DropdownButton } from "react-bootstrap"
-import _ from "lodash"
+import { sum, values, map } from "lodash"
+import PRODUCTS from "~/src/constants/Products"
 
 export default class Cart extends React.PureComponent {
   static propTypes = {
     cartProducts: PropTypes.object.isRequired,
-    productList: PropTypes.array.isRequired,
     onDragOver: PropTypes.func,
     onDrop: PropTypes.func,
   }
 
-  disabled = () => _.isEmpty(this.props.cartProducts)
+  disabled = () => this.count() === 0
 
-  title = () => {
-    const products = this.props.cartProducts
-    const prefix = "Корзина"
-    const suffix = _.isEmpty(products) ? "пуста" : `(${_.sum(_.values(products))})`
+  count = () => sum(values(this.props.cartProducts))
 
-    return `${prefix} ${suffix}`
-  }
+  title = () => this.count() > 0 ? `Корзина (${this.count()})` : "Корзина пуста"
 
   render () {
     const { onDragOver, onDrop } = this.props
-    const items = _.map(this.props.cartProducts, (count, id) => {
-      const { title } = this.props.productList.find(item => item.id === parseInt(id))
+    const items = map(this.props.cartProducts, (count, id) => {
+      const { title } = PRODUCTS.find(item => item.id === parseInt(id))
 
       return <Dropdown.Item key={id}>{`${title} x ${count} шт.`}</Dropdown.Item>
     })

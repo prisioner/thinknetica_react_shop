@@ -1,9 +1,20 @@
-import React from "react"
-import ProductCard from "./ProductCard"
-import { Col } from "react-bootstrap"
+import React, { Fragment } from "react"
+import PRODUCTS from "~/src/constants/Products"
+import Catalog from "./Catalog"
+import CartBlock from "./CartBlock"
+import { Row } from "react-bootstrap"
 
-const CatalogPage = ({ products }) => (
-  products.map(product => (<Col key={product.id}><ProductCard {...product} /></Col>))
-)
-
-export default CatalogPage
+export default class CatalogPage extends React.PureComponent {
+  render () {
+    return (
+      <Fragment>
+        <Row className="mt-5" style={{ minHeight: "100px" }}>
+          <CartBlock />
+        </Row>
+        <Row className="mt-3">
+          <Catalog products={PRODUCTS} />
+        </Row>
+      </Fragment>
+    )
+  }
+}

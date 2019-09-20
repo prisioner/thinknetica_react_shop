@@ -1,12 +1,15 @@
 import React, { Component } from "react"
 import ReactDOM from "react-dom"
-import Catalog from "~/src/components/Catalog"
+import CatalogPage from "~/src/components/CatalogPage"
+import CartContainer from "~/src/components/CartContainer"
 import "bootstrap/dist/css/bootstrap.css"
 
 class App extends Component {
   render() {
     return(
-      <Catalog />
+      <CartContainer>
+        <CatalogPage />
+      </CartContainer>
     )
   }
 }
