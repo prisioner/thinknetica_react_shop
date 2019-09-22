@@ -1,7 +1,7 @@
 import React, { Fragment } from "react"
 import PRODUCTS from "~/src/constants/Products"
 import Catalog from "./Catalog"
-import CartBlock from "./CartBlock"
+import CartBlock from "../CartBlock"
 import { Row } from "react-bootstrap"
 
 export default class CatalogPage extends React.PureComponent {

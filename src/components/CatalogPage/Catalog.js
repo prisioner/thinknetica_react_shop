@@ -1,5 +1,5 @@
 import React from "react"
-import ProductCard from "./ProductCard"
+import ProductCard from "../ProductCard"
 import { Col } from "react-bootstrap"
 
 const Catalog = ({ products }) => (
