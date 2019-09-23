@@ -29,7 +29,7 @@ export default class BuyButton extends React.PureComponent {
           <CartContext.Consumer>
             {
               ({ addProduct }) => (
-                <Button variant="success" onClick={() => addProduct(productId, count)}>В корзину</Button>
+                <Button variant="success" onClick={() => addProduct(productId, count)}>Add to Cart</Button>
               )
             }
           </CartContext.Consumer>

@@ -14,9 +14,18 @@ export default class CartContainer extends React.PureComponent {
     this.setState({ cartProducts })
   }
 
+  removeProduct = (product) => {
+    const cartProducts = clone(this.state.cartProducts)
+
+    delete cartProducts[product]
+
+    this.setState({ cartProducts })
+  }
+
   state = {
     cartProducts: {},
     addProduct: this.addProduct,
+    removeProduct: this.removeProduct,
   }
 
   render () {

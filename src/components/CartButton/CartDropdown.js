@@ -1,10 +1,12 @@
 import React from "react"
 import PropTypes from "prop-types"
-import { Col, Dropdown, DropdownButton } from "react-bootstrap"
+import { Dropdown, Button, ButtonGroup } from "react-bootstrap"
+import { NavLink } from "react-router-dom"
+import { cartPath } from "../../helpers/routes"
 import { sum, values, map } from "lodash"
 import PRODUCTS from "~/src/constants/Products"
 
-export default class Cart extends React.PureComponent {
+export default class CartDropdown extends React.PureComponent {
   static propTypes = {
     cartProducts: PropTypes.object.isRequired,
     onDragOver: PropTypes.func,
@@ -15,7 +17,7 @@ export default class Cart extends React.PureComponent {
 
   count = () => sum(values(this.props.cartProducts))
 
-  title = () => this.count() > 0 ? `Корзина (${this.count()})` : "Корзина пуста"
+  title = () => this.count() > 0 ? `Cart (${this.count()})` : "Cart is empty"
 
   render () {
     const { onDragOver, onDrop } = this.props
@@ -26,20 +28,19 @@ export default class Cart extends React.PureComponent {
     })
 
     return (
-      <Col
-        md={12}
-        className="text-right border mh-100"
+      <Dropdown
+        as={ButtonGroup}
         onDragOver={onDragOver}
         onDrop={onDrop}
       >
-        <DropdownButton
-          alignRight
-          title={this.title()}
-          disabled={this.disabled()}
-        >
-          {items}
-        </DropdownButton>
-      </Col>
+        <Button as={NavLink} to={cartPath()}>{this.title()}</Button>
+
+        <Dropdown.Toggle split disabled={this.disabled()} />
+
+        <Dropdown.Menu alignRight>
+          { items }
+        </Dropdown.Menu>
+      </Dropdown>
     )
   }
 }
