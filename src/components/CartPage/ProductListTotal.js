@@ -1,11 +1,10 @@
 import React from "react"
 import { Button } from "react-bootstrap"
-import PRODUCTS from "../../constants/Products"
 import { reduce } from "lodash"
 
-const ProductListTotal = ({ productList }) => {
+const ProductListTotal = ({ productList, products }) => {
   const totalPrice = reduce(productList, (total, amount, productId) => {
-    const product = PRODUCTS.find(item => item.id === parseInt(productId))
+    const product = products.find(item => item.id === productId)
 
     return total + amount * parseFloat(product.price)
   }, 0)

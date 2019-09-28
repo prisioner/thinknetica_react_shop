@@ -4,7 +4,19 @@ import ProductListItem from "./ProductListItem"
 import ProductListTotal from "./ProductListTotal"
 import { map } from "lodash"
 
-const ProductList = ({ productList, addProduct, removeProduct }) => {
+const ProductList = ({ products, productList, addProduct, removeProduct }) => {
+  const productListItems = map(productList, (amount, productId) => {
+    const product = products.find(item => item.id === productId)
+
+    return (<ProductListItem
+              key={productId}
+              product={product}
+              amount={amount}
+              addProduct={addProduct}
+              removeProduct={removeProduct}
+            />)
+  })
+
   return(
     <Table>
       <thead>
@@ -17,18 +29,8 @@ const ProductList = ({ productList, addProduct, removeProduct }) => {
         </tr>
       </thead>
       <tbody>
-        {
-          map(productList, (amount, productId) => (
-            <ProductListItem
-              key={productId}
-              productId={productId}
-              amount={amount}
-              addProduct={addProduct}
-              removeProduct={removeProduct}
-            />
-          ))
-        }
-        <ProductListTotal productList={productList} />
+        {productListItems}
+        <ProductListTotal products={products} productList={productList} />
       </tbody>
     </Table>
   )

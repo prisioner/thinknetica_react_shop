@@ -3,14 +3,36 @@ import PropTypes from "prop-types"
 import { Dropdown, Button, ButtonGroup } from "react-bootstrap"
 import { NavLink } from "react-router-dom"
 import { cartPath } from "../../helpers/routes"
-import { sum, values, map } from "lodash"
-import PRODUCTS from "~/src/constants/Products"
+import { sum, values, map, clone } from "lodash"
+import request from "superagent"
+import { ACCESS_TOKEN, productsPath } from "../../helpers/contentful_api"
 
 export default class CartDropdown extends React.PureComponent {
   static propTypes = {
     cartProducts: PropTypes.object.isRequired,
     onDragOver: PropTypes.func,
     onDrop: PropTypes.func,
+  }
+
+  state = {
+    products: [],
+  }
+
+  componentDidMount() {
+    request
+      .get(productsPath())
+      .query({ "content_type": "product" })
+      .set('Authorization', `Bearer ${ACCESS_TOKEN}`)
+      .then(({ body: { items } }) => {
+        const products = [];
+        items.map((item) =>{
+          const product = clone(item.fields);
+          product.id = item.sys.id;
+          products.push(product);
+        })
+
+        this.setState({ products })
+      })
   }
 
   disabled = () => this.count() === 0
@@ -22,7 +44,7 @@ export default class CartDropdown extends React.PureComponent {
   render () {
     const { onDragOver, onDrop } = this.props
     const items = map(this.props.cartProducts, (count, id) => {
-      const { title } = PRODUCTS.find(item => item.id === parseInt(id))
+      const { title } = this.state.products.find(item => item.id === id)
 
       return <Dropdown.Item key={id}>{`${title} x ${count} шт.`}</Dropdown.Item>
     })
