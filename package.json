@@ -11,14 +11,18 @@
   "license": "ISC",
   "dependencies": {
     "bootstrap": "^4.3.1",
+    "history": "^4.10.1",
     "lodash": "^4.17.15",
     "react": "^16.9.0",
     "react-bootstrap": "^1.0.0-beta.12",
-    "react-dom": "^16.9.0"
+    "react-dom": "^16.9.0",
+    "react-router": "^5.0.1",
+    "react-router-dom": "^5.0.1"
   },
   "devDependencies": {
     "@babel/core": "^7.4.3",
     "@babel/plugin-proposal-class-properties": "^7.5.5",
+    "@babel/plugin-proposal-decorators": "^7.6.0",
     "@babel/preset-env": "^7.4.3",
     "@babel/preset-react": "^7.0.0",
     "@babel/register": "^7.4.0"
