@@ -1,39 +1,29 @@
 import React from "react"
 import CartContext from "../contexts/CartContext"
 import { Container } from "react-bootstrap"
-import { clone } from "lodash"
+import { connect } from "react-redux"
+import * as cartActions from "../actions/Cart"
+import { bindActionCreators } from "redux"
 
+const mapStateToProps = (state) => ({
+  cartProducts: state.cart.cartProducts,
+})
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    addProduct: bindActionCreators(cartActions.addProduct, dispatch),
+    removeProduct: bindActionCreators(cartActions.removeProduct, dispatch),
+  };
+};
+
+@connect(mapStateToProps, mapDispatchToProps)
 export default class CartContainer extends React.PureComponent {
-  addProduct = (product, count = 1) => {
-    const cartProducts = clone(this.state.cartProducts)
-
-    if (!cartProducts.hasOwnProperty(product)) cartProducts[product] = 0
-
-    cartProducts[product] += parseInt(count)
-
-    this.setState({ cartProducts })
-  }
-
-  removeProduct = (product) => {
-    const cartProducts = clone(this.state.cartProducts)
-
-    delete cartProducts[product]
-
-    this.setState({ cartProducts })
-  }
-
-  state = {
-    cartProducts: {},
-    addProduct: this.addProduct,
-    removeProduct: this.removeProduct,
-  }
-
   render () {
-    const { children } = this.props
+    const { children, cartProducts, addProduct, removeProduct } = this.props
 
     return (
       <Container>
-        <CartContext.Provider value={this.state}>
+        <CartContext.Provider value={{cartProducts, addProduct, removeProduct}}>
           {children}
         </CartContext.Provider>
       </Container>
