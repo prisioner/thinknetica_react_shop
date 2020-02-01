@@ -4,12 +4,10 @@ import { Row, Col, Spinner } from "react-bootstrap"
 import { isEmpty } from "lodash"
 import { Redirect } from "react-router"
 import { mainPath } from "../../helpers/routes"
-import { clone } from "lodash"
-import request from "superagent"
-import { ACCESS_TOKEN, productsPath } from "../../helpers/contentful_api"
 import { connect } from "react-redux"
 import * as cartActions from "../../actions/Cart"
 import { bindActionCreators } from "redux"
+import { getProducts } from "../../modules/repositories/ProductRepository"
 
 const mapStateToProps = (state) => ({
   cartProducts: state.cart.cartProducts,
@@ -30,18 +28,8 @@ export default class CartPage extends React.PureComponent {
   }
 
   componentDidMount() {
-    request
-      .get(productsPath())
-      .query({ "content_type": "product" })
-      .set('Authorization', `Bearer ${ACCESS_TOKEN}`)
-      .then(({ body: { items } }) => {
-        const products = [];
-        items.map((item) =>{
-          const product = clone(item.fields);
-          product.id = item.sys.id;
-          products.push(product);
-        })
-
+    getProducts()
+      .then(({ products }) => {
         this.setState({ loading: false, products })
       })
   }
