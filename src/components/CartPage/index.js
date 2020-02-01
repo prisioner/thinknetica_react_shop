@@ -1,14 +1,28 @@
 import React from "react"
 import ProductList from "./ProductList"
 import { Row, Col, Spinner } from "react-bootstrap"
-import CartContext from "../../contexts/CartContext"
 import { isEmpty } from "lodash"
 import { Redirect } from "react-router"
 import { mainPath } from "../../helpers/routes"
 import { clone } from "lodash"
 import request from "superagent"
 import { ACCESS_TOKEN, productsPath } from "../../helpers/contentful_api"
+import { connect } from "react-redux"
+import * as cartActions from "../../actions/Cart"
+import { bindActionCreators } from "redux"
 
+const mapStateToProps = (state) => ({
+  cartProducts: state.cart.cartProducts,
+})
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    addProduct: bindActionCreators(cartActions.addProduct, dispatch),
+    removeProduct: bindActionCreators(cartActions.removeProduct, dispatch),
+  }
+}
+
+@connect(mapStateToProps, mapDispatchToProps)
 export default class CartPage extends React.PureComponent {
   state = {
     loading: true,
@@ -34,6 +48,7 @@ export default class CartPage extends React.PureComponent {
 
   render() {
     const { loading, products } = this.state
+    const { cartProducts, addProduct, removeProduct } = this.props
 
     if (loading) {
       return(
@@ -47,26 +62,22 @@ export default class CartPage extends React.PureComponent {
       <Row>
         <Col>
           <h3>Cart</h3>
-          <CartContext.Consumer>
             {
-              ({ cartProducts, addProduct, removeProduct }) => (
-                isEmpty(cartProducts)
-                  ?
-                  <Redirect to={{
-                    pathname: mainPath(),
-                    state: { message: "Cart is empty" }
-                  }}
-                  />
-                  :
-                  <ProductList
-                    products={products}
-                    productList={cartProducts}
-                    addProduct={addProduct}
-                    removeProduct={removeProduct}
-                  />
-              )
+              isEmpty(cartProducts)
+                ?
+                <Redirect to={{
+                  pathname: mainPath(),
+                  state: { message: "Cart is empty" }
+                }}
+                />
+                :
+                <ProductList
+                  products={products}
+                  productList={cartProducts}
+                  addProduct={addProduct}
+                  removeProduct={removeProduct}
+                />
             }
-          </CartContext.Consumer>
         </Col>
       </Row>
     )
