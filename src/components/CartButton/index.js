@@ -1,25 +1,32 @@
 import React from "react"
-import CartContext from "../../contexts/CartContext";
-import CartDropdown from "./CartDropdown";
+import CartDropdown from "./CartDropdown"
+import { connect } from "react-redux"
+import * as cartActions from "../../actions/Cart"
+import { bindActionCreators } from "redux"
 
-const CartButton = () => {
+const mapStateToProps = (state) => ({
+  cartProducts: state.cart.cartProducts,
+})
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    addProduct: bindActionCreators(cartActions.addProduct, dispatch),
+  }
+}
+
+const CartButton = ({ cartProducts, addProduct }) => {
   return(
-    <CartContext.Consumer>
-      {
-        ({ cartProducts, addProduct }) => (
-          <CartDropdown
-            cartProducts={cartProducts}
-            onDragOver={(e) => e.preventDefault()}
-            onDrop={(e) => {
-              e.preventDefault()
-              const productId = e.dataTransfer.getData("text/plain")
-              addProduct(productId)
-            }}
-          />
-        )
-      }
-    </CartContext.Consumer>
+    <CartDropdown
+      cartProducts={cartProducts}
+      onDragOver={(e) => e.preventDefault()}
+      onDrop={(e) => {
+        e.preventDefault()
+        const productId = e.dataTransfer.getData("text/plain")
+        addProduct(productId)
+      }}
+    />
+
   )
 }
 
-export default CartButton
+export default connect(mapStateToProps, mapDispatchToProps)(CartButton)

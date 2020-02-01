@@ -3,9 +3,8 @@ import PropTypes from "prop-types"
 import { Dropdown, Button, ButtonGroup } from "react-bootstrap"
 import { NavLink } from "react-router-dom"
 import { cartPath } from "../../helpers/routes"
-import { sum, values, map, clone } from "lodash"
-import request from "superagent"
-import { ACCESS_TOKEN, productsPath } from "../../helpers/contentful_api"
+import { sum, values, map } from "lodash"
+import { getProducts } from "../../modules/repositories/ProductRepository"
 
 export default class CartDropdown extends React.PureComponent {
   static propTypes = {
@@ -19,18 +18,8 @@ export default class CartDropdown extends React.PureComponent {
   }
 
   componentDidMount() {
-    request
-      .get(productsPath())
-      .query({ "content_type": "product" })
-      .set('Authorization', `Bearer ${ACCESS_TOKEN}`)
-      .then(({ body: { items } }) => {
-        const products = [];
-        items.map((item) =>{
-          const product = clone(item.fields);
-          product.id = item.sys.id;
-          products.push(product);
-        })
-
+    getProducts()
+      .then(({ products }) => {
         this.setState({ products })
       })
   }
