@@ -1,7 +1,16 @@
 import React from "react"
 import { InputGroup, FormControl, Button } from "react-bootstrap"
-import CartContext from "../../contexts/CartContext"
+import { connect } from "react-redux"
+import * as cartActions from "../../actions/Cart"
+import { bindActionCreators } from "redux"
 
+const mapDispatchToProps = (dispatch) => {
+  return {
+    addProduct: bindActionCreators(cartActions.addProduct, dispatch),
+  }
+}
+
+@connect(null, mapDispatchToProps)
 export default class BuyButton extends React.PureComponent {
   state = {
     count: 1,
@@ -14,7 +23,7 @@ export default class BuyButton extends React.PureComponent {
   }
 
   render () {
-    const { productId } = this.props
+    const { productId, addProduct } = this.props
     const { count } = this.state
 
     return (
@@ -26,13 +35,7 @@ export default class BuyButton extends React.PureComponent {
         />
         <InputGroup.Append>
           <InputGroup.Text>шт.</InputGroup.Text>
-          <CartContext.Consumer>
-            {
-              ({ addProduct }) => (
-                <Button variant="success" onClick={() => addProduct(productId, count)}>Add to Cart</Button>
-              )
-            }
-          </CartContext.Consumer>
+          <Button variant="success" onClick={() => addProduct(productId, count)}>Add to Cart</Button>
         </InputGroup.Append>
       </InputGroup>
     )

@@ -4,13 +4,24 @@ import { Dropdown, Button, ButtonGroup } from "react-bootstrap"
 import { NavLink } from "react-router-dom"
 import { cartPath } from "../../helpers/routes"
 import { sum, values, map } from "lodash"
-import PRODUCTS from "~/src/constants/Products"
+import { getProducts } from "../../modules/repositories/ProductRepository"
 
 export default class CartDropdown extends React.PureComponent {
   static propTypes = {
     cartProducts: PropTypes.object.isRequired,
     onDragOver: PropTypes.func,
     onDrop: PropTypes.func,
+  }
+
+  state = {
+    products: [],
+  }
+
+  componentDidMount() {
+    getProducts()
+      .then(({ products }) => {
+        this.setState({ products })
+      })
   }
 
   disabled = () => this.count() === 0
@@ -22,7 +33,7 @@ export default class CartDropdown extends React.PureComponent {
   render () {
     const { onDragOver, onDrop } = this.props
     const items = map(this.props.cartProducts, (count, id) => {
-      const { title } = PRODUCTS.find(item => item.id === parseInt(id))
+      const { title } = this.state.products.find(item => item.id === id)
 
       return <Dropdown.Item key={id}>{`${title} x ${count} шт.`}</Dropdown.Item>
     })

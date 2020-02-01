@@ -1,23 +1,54 @@
 import React from "react"
 import NotFoundPage from "./NotFoundPage"
-import PRODUCTS from "../constants/Products"
-import { Row, Col } from "react-bootstrap"
+import { Row, Col, Spinner } from "react-bootstrap"
 import ProductCard from "./ProductCard"
+import PropTypes from "prop-types"
+import { getProductById } from "../modules/repositories/ProductRepository"
 
-const ProductPage = ({ productId }) => {
-  const product = PRODUCTS.find(item => item.id === parseInt(productId))
-
-  if (!product) {
-    return <NotFoundPage />
+export default class ProductPage extends React.PureComponent {
+  static propTypes = {
+    productId: PropTypes.string.isRequired,
   }
 
-  return(
-    <Row>
-      <Col>
-        <ProductCard { ...product } />
-      </Col>
-    </Row>
-  )
-}
+  state = {
+    notFound: false,
+    loading: true,
+    product: {},
+  }
 
-export default ProductPage
+  componentDidMount() {
+    const productId = this.props.productId
+
+    getProductById(productId)
+      .then(({ product }) => {
+        this.setState({ loading: false, product })
+      })
+      .catch(err => (
+        err.notFound ? this.setState({ loading: false, notFound: true }) : console.log(err)
+      ))
+  }
+
+  render() {
+    const { product, loading, notFound } = this.state
+
+    if (loading) {
+      return(
+        <Spinner animation="border" role="status">
+          <span className="sr-only">Loading...</span>
+        </Spinner>
+      )
+    }
+
+    if (notFound) {
+      return <NotFoundPage />
+    }
+
+    return(
+      <Row>
+        <Col>
+          <ProductCard { ...product } />
+        </Col>
+      </Row>
+    )
+  }
+}
