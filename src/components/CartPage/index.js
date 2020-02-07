@@ -17,6 +17,7 @@ const mapDispatchToProps = (dispatch) => {
   return {
     addProduct: bindActionCreators(cartActions.addProduct, dispatch),
     removeProduct: bindActionCreators(cartActions.removeProduct, dispatch),
+    loadCartState: bindActionCreators(cartActions.loadCartState, dispatch),
   }
 }
 
@@ -28,6 +29,8 @@ export default class CartPage extends React.PureComponent {
   }
 
   componentDidMount() {
+    this.props.loadCartState()
+
     getProducts()
       .then(({ products }) => {
         this.setState({ loading: false, products })

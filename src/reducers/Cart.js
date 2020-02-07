@@ -28,6 +28,11 @@ export default function(state = initialState, action) {
         ...state,
         cartProducts,
       }
+    case types.LOAD_CART_STATE:
+      return {
+        ...state,
+        cartProducts: action.cartProducts,
+      }
     default:
       return state
   }
