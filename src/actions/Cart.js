@@ -10,3 +10,7 @@ export const removeProduct = (productId) => ({
   type: types.REMOVE_PRODUCT,
   productId,
 })
+
+export const loadCartState = () => ({
+  type: types.LOAD_CART_STATE,
+})
